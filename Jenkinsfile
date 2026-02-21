@@ -4,36 +4,35 @@ pipeline{
    stages{
       stage("Restore the dependencies"){
          when {
-            expression {
-               return env.GIT_BRANCH == 'origin/main'
-            }
+            branch 'main'
          }
          steps{
             bat "dotnet restore"
-            echo "======== executing Restore stage ========"
+            echo "======== end of Restore stage ========"
          }
       }
       stage("Build the app"){
          when {
-            expression {
-               return env.GIT_BRANCH == 'origin/main'
-            }
+            branch 'main'
          }
          steps{
             bat "dotnet build --no-restore"
-            echo "======== executing Build stage ========"
+            echo "======== end of Build stage ========"
          }
       }
       stage("Run tests for app"){
          when {
-            expression {
-               return env.GIT_BRANCH == 'origin/main'
-            }
+            branch 'main'
          }
          steps{
             bat "dotnet test --no-build --verbosity normal"
-            echo "======== executing Test stage ========"
+            echo "======== end of Test stage ========"
          }
       }
+   }
+   post {
+      always {echo "Jenkinsfile execution completed"}
+      success { echo "Pipeline succeeded" }
+      failure { echo "Pipeline failed" }
    }
 }
