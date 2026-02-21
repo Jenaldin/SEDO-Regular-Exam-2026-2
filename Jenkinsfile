@@ -4,7 +4,9 @@ pipeline{
    stages{
       stage("Restore the dependencies"){
          when {
-            branch 'main'
+            expression {
+               return env.GIT_BRANCH == 'origin/main'
+            }
          }
          steps{
             bat "dotnet restore"
@@ -13,7 +15,9 @@ pipeline{
       }
       stage("Build the app"){
          when {
-            branch 'main'
+            expression {
+               return env.GIT_BRANCH == 'origin/main'
+            }
          }
          steps{
             bat "dotnet build --no-restore"
@@ -22,7 +26,9 @@ pipeline{
       }
       stage("Run tests for app"){
          when {
-            branch 'main'
+            expression {
+               return env.GIT_BRANCH == 'origin/main'
+            }
          }
          steps{
             bat "dotnet test --no-build --verbosity normal"
